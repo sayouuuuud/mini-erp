@@ -1,5 +1,5 @@
 {
-  "name": "system-erp",
+  "name": "mini-erp",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,14 +8,17 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint src",
     "preview": "vite preview",
-    "test:cleanup": "node scripts/test_sections_cleanup.cjs",
-    "test:wallets": "node scripts/test_system_wallet_lifecycle.cjs",
-    "test:atomic-storage": "node scripts/test_atomic_storage.cjs",
-    "test:wallet-rpc": "node scripts/test_wallet_rpc_integration.mjs",
-    "test:maintenance": "node scripts/test_maintenance.cjs",
-    "test:inventory-refunds": "node scripts/test_inventory_refunds.cjs",
-    "test:fraud": "node scripts/test_ticket_fraud.cjs",
-    "test:no-embedded-credentials": "node scripts/test_no_embedded_credentials.cjs"
+    "test:cleanup": "node tests/test_sections_cleanup.cjs",
+    "test:wallets": "node tests/test_system_wallet_lifecycle.cjs",
+    "test:atomic-storage": "node tests/test_atomic_storage.cjs",
+    "test:wallet-rpc": "node tests/test_wallet_rpc_integration.mjs",
+    "test:maintenance": "node tests/test_maintenance.cjs",
+    "test:inventory-refunds": "node tests/test_inventory_refunds.cjs",
+    "test:fraud": "node tests/test_ticket_fraud.cjs",
+    "test:no-embedded-credentials": "node tests/test_no_embedded_credentials.cjs",
+    "test": "npm run test:no-embedded-credentials && npm run test:cleanup && npm run test:atomic-storage && npm run test:maintenance && npm run test:inventory-refunds && npm run test:fraud && npm run test:wallets && npm run test:wallet-receiving",
+    "test:wallet-receiving": "node tests/test_wallet_receiving_regression.mjs",
+    "test:ui": "node tests/test_fraud_ui.cjs && node tests/test_history_ui.cjs && node tests/test_profit_loss_modal.cjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.118.0",
@@ -36,10 +39,15 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.1.0",
+    "esbuild": "^0.28.2",
+    "jsdom": "^26.1.0",
     "oxlint": "^1.79.0",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.23.15",
     "typescript": "~6.0.2",
     "vite": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=24"
   }
 }

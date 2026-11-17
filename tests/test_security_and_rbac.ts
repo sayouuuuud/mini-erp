@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { User, Permission } from '../src/types/auth.types';
 import { CustomerTicket } from '../src/types/customer.types';
-import { CompetitionReward } from '../src/types/competitions.types';
+import { CompetitionReward } from '../src/types/competition.types';
 
 // Mock Browser Storage
 class MockLocalStorage {
@@ -282,8 +282,8 @@ async function runSecurityAndRbacSuite() {
   assert(Boolean(escalationLog), 'SEC-25', 'Privilege escalation attempt was explicitly identified and logged');
 
   // Check no password leakage in audit logs
-  const passwordLeak = auditLogs.some(l => l.details && l.details.includes(adminTestCredential));
-  assert(!passwordLeak, 'SEC-26', 'Admin passwords and secrets are never leaked in audit logs');
+  const auditContainsTestCredential = auditLogs.some(l => l.details && l.details.includes(adminTestCredential));
+  assert(!auditContainsTestCredential, 'SEC-26', 'Admin passwords and secrets are never leaked in audit logs');
 
   // -------------------------------------------------------------------------
   // SUITE 6: Stored XSS & Script Tag Injection Resilience

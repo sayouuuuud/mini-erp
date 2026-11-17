@@ -1,4 +1,4 @@
-// scripts/test_supabase_hydration_lifecycle.ts
+// tests/test_supabase_hydration_lifecycle.ts
 // Verification script for fast Supabase parallel hydration lifecycle, phone conflict detection, UI state preservation, and cache resilience.
 
 import { supabaseStorage, UI_STORAGE_KEYS } from '../src/database/supabaseStorage';

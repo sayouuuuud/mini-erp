@@ -1,4 +1,4 @@
-// scripts/test_comprehensive_database_deep_audit.ts
+// tests/test_comprehensive_database_deep_audit.ts
 // Exhaustive Database & Financial Integrity Audit Suite for Ammar ERP (Supabase PostgreSQL 17)
 
 import { supabase } from '../src/lib/supabase';

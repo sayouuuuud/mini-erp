@@ -17,6 +17,6 @@ function walk(dir){for(const e of fs.readdirSync(dir,{withFileTypes:true})){cons
   ts.forEachChild(n,visit);
  }visit(sf);
 }}
-walk(path.join(root,'src'));walk(path.join(root,'scripts'));
+walk(path.join(root,'src'));walk(path.join(root,'tests'));
 assert.deepEqual(findings,[],JSON.stringify(findings));
 console.log('PASS: no nonempty credential literals or literal authentication arguments in source and test fixtures');

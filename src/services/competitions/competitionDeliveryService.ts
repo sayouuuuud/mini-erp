@@ -236,7 +236,7 @@ export class CompetitionDeliveryService {
             dealer.updatedAt = new Date().toISOString();
             db.saveDealer(dealer);
 
-            // Sync with mw_cashback dealer system wallet (GEMINI.md Rule 3)
+            // Sync with mw_cashback dealer system wallet (docs/architecture.md Rule 3)
             db.creditCashbackToSystemWallet(reward.prizeValue, dealer.name || dealer.businessName || 'تاجر', `REW-${reward.id.slice(-6)}`, true);
             customerCredited = true;
             customerCreditAmount = reward.prizeValue;

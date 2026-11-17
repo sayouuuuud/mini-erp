@@ -1,4 +1,4 @@
-// scripts/test_supabase_live_integration.ts
+// tests/test_supabase_live_integration.ts
 import { supabase } from '../src/lib/supabase';
 import { supabaseStorage, KEY_TO_TABLE_MAP } from '../src/database/supabaseStorage';
 import { db } from '../src/database/db';

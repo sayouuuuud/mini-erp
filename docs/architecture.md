@@ -39,5 +39,5 @@
 - **Pre-Hydration Cache Guard**: `getItem` must not lock fallback/default values into the cache prior to hydration completion. Fallbacks can only be served ephemerally until authoritative Supabase data populates the in-memory cache.
 - **Table vs System KV Mapping**: Entity collections (users, customers, dealers, tickets, wallets, transactions, competitions, etc.) map to dedicated PostgreSQL tables via `KEY_TO_TABLE_MAP`. Singleton configurations and nested tree states (e.g. `gamesTree`, `systemSettings`) map to `system_kv` as JSONB.
 - **Local Storage Decommissioning**: The application must never rely on browser `localStorage` as a primary database. Legacy storage keys (`nzm_jkr_*`, `jkr_*`) are automatically cleared upon hydration to protect against stale data and local storage quota limits.
-- **Migration Synchronization**: Any future schema modification must be authored as a versioned `.sql` file in `scripts/` before applying to Supabase.
+- **Migration Synchronization**: Any future schema modification must be authored as a versioned `.sql` file in `supabase/migrations/` before applying to Supabase.
 

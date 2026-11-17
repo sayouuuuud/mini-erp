@@ -1,8 +1,13 @@
 {
   "compilerOptions": {
     "target": "es2023",
-    "lib": ["ES2023", "DOM"],
-    "types": ["node"],
+    "lib": [
+      "ES2023",
+      "DOM"
+    ],
+    "types": [
+      "node"
+    ],
     "skipLibCheck": true,
     "module": "esnext",
     "moduleResolution": "bundler",
@@ -12,7 +17,7 @@
     "noEmit": true
   },
   "include": [
-    "scripts/test_erp_full_audit.ts",
-    "scripts/test_wallets_and_modules_deep_audit.ts"
+    "tests/test_erp_full_audit.ts",
+    "tests/test_wallets_and_modules_deep_audit.ts"
   ]
 }

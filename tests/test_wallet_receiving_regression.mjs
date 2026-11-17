@@ -1,4 +1,4 @@
-// Run with Node 24+: node scripts/test_wallet_receiving_regression.mjs
+// Run with Node 24+: node tests/test_wallet_receiving_regression.mjs
 // Exercise the actual database method with isolated storage; never connect to Supabase.
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';

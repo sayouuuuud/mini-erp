@@ -10,9 +10,9 @@
 
 التحقق: 17 اختبار احتيال، 60 اختبار دورة محافظ، 12 اختبار استرداد مخزون، اختبارات التخزين الذري، اختبار واجهة React DOM وانتظار الحفظ، واختبار RPC معزول ببيانات مؤقتة تم التراجع عنها بالكامل.
 
-الواجهة: `npm run test:fraud`، واختبار DOM الاختياري `node scripts/test_fraud_ui.cjs` يحتاج `jsdom` مع أدوات البناء.
+الواجهة: `npm run test:fraud`، واختبار DOM من خلال `npm run test:ui`؛ تبعياته معرفة في المشروع.
 
-ترقية قاعدة البيانات: `supabase/migrations/20261117040000_ticket_fraud_accounting.sql`.
+ترقية قاعدة البيانات: `../supabase/migrations/20261117040000_ticket_fraud_accounting.sql`.
 
 ---
 
@@ -25,5 +25,5 @@
 - إجراءات الحسابات والإعدادات وإغلاق الوردية تظهر في السجل لكن تتطلب تعديلًا أو تسوية من واجهتها.
 - لا يعيد التراجع مجموعات بيانات كاملة، ولا يلغي العمليات الأحدث تلقائيًا.
 التحقق: بناء TypeScript/Vite، 60 اختبار محافظ، atomic storage، maintenance، React DOM auth+history+archive، PostgreSQL17 مع نسخة تعريفات الدوال الحالية وبيانات QA مؤقتة؛ 15 اختبار توزيع مالي بالإضافة لحفظ النسخة الثابتة واختبارات last10 والتعارض والإعادة.
-ملفات قاعدة البيانات: supabase/migrations/20261117010000_shift_history_selective_actions.sql.
+ملفات قاعدة البيانات: ../supabase/migrations/20261117010000_shift_history_selective_actions.sql.
 اختبارات SQL تستخدم بيانات مؤقتة وتلغيها داخل subtransaction.

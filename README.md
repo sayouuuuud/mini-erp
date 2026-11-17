@@ -1,32 +1,69 @@
-# React + TypeScript + Vite
+# mini-erp · JKR TOPUP
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+نظام إدارة عربي لمحلات شحن الألعاب والمنتجات الرقمية، مبني باستخدام React وTypeScript وVite، مع Supabase للمصادقة والبيانات والتحديثات الفورية.
 
-Currently, two official plugins are available:
+يدير التذاكر والعملاء والكتالوج والكوبونات والموردين والمحافظ والخزائن والورديات والتقارير، ويدعم تكلفة البضاعة بنظام FIFO والكاش باك والإحالات.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## التشغيل محليًا
 
-## React Compiler
+يتطلب Node.js 24 أو أحدث وnpm، ومشروع Supabase مجهز بمخطط النظام وترقياته.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm ci
+cp .env.example .env
+# اضبط متغيرات Supabase في .env
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+| المتغير | الاستخدام |
+| --- | --- |
+| `VITE_SUPABASE_URL` | رابط مشروع Supabase |
+| `VITE_SUPABASE_ANON_KEY` | مفتاح العميل العام `anon` |
+
+تصل متغيرات `VITE_*` إلى المتصفح؛ لا تستخدم فيها مفاتيح `service_role` أو أي أسرار خادم. توجد قيم اتصال افتراضية في `src/lib/supabase.ts` للتوافق مع النسخة القائمة؛ اضبط متغيراتك صراحة عند تشغيل نسخة مستقلة.
+
+## أوامر المشروع
+
+| الأمر | الوظيفة |
+| --- | --- |
+| `npm run dev` | خادم التطوير |
+| `npm run build` | فحص TypeScript وإنشاء `dist/` |
+| `npm run preview` | معاينة البناء محليًا |
+| `npm run lint` | فحص الشيفرة باستخدام Oxlint |
+| `npm test` | اختبارات الانحدار المعزولة الأساسية |
+| `npm run test:ui` | اختبارات واجهات الاحتيال والجلسة وسجل الإجراءات وتسوية الخسائر |
+| `npm run test:wallet-rpc` | اختبار تكامل يتطلب حسابات QA مجهزة في `ERP_QA_FIXTURE` |
+
+للنشر كبناء ثابت: استخدم `npm run build`، ومجلد المخرجات `dist`، واضبط متغيرات الاتصال قبل البناء.
+
+## تنظيم الملفات
+
+| المسار | المحتوى |
+| --- | --- |
+| `src/` | واجهة التطبيق وخدماته وأنواعه وتخزينه |
+| `public/` | الشعار وأيقونة الموقع |
+| `tests/` | اختبارات الانحدار وتدقيق النظام |
+| `supabase/bootstrap/` | مخطط الجداول الأساسي التاريخي |
+| `supabase/migrations/` | ترقيات قاعدة البيانات مرتبة بتاريخها |
+| `supabase/tests/` | اختبارات SQL للتكامل المحاسبي والصلاحيات |
+| `docs/` | قواعد المحاسبة والتخزين وملاحظات الإصلاحات الحالية |
+
+## قاعدة البيانات والاختبارات
+
+يحفظ النظام البيانات في Supabase، ويستخدم ذاكرة مؤقتة في الواجهة. ترقيات قاعدة البيانات ملفات مستقلة؛ لا ينفذها أمر البناء. راجع [دليل قاعدة البيانات](supabase/README.md) قبل تجهيز قاعدة جديدة أو إجراء اختبارات تكامل.
+
+تعمل `npm test` و`npm run test:ui` باستخدام بيانات وهمية وحدود اتصال معزولة. اختبارات التدقيق التاريخية من نوع `tests/test_*audit.ts` وبعض اختبارات Supabase تستخدم افتراضات قديمة أو تتصل بقاعدة معدة؛ ليست ضمن الاختبارات الافتراضية. راجع [دليل الاختبارات](tests/README.md) قبل تشغيلها.
+
+## قواعد المحاسبة المهمة
+
+- الاسترداد يعيد تكلفة البضاعة مرة واحدة مع الحفاظ على اتساق FIFO.
+- تسجيل الاحتيال يلغي التحصيل الوهمي وآثاره المالية ويعيد حدود الاستلام الخاصة بفترته، مع بقاء البضاعة المسلمة مخصومة وسجلات العملية محفوظة.
+- فصل خزائن الورديات والأرباح، والتحقق من التعارض والصلاحيات، جزء من ترقيات قاعدة البيانات وخدمات المحاسبة.
+
+التفاصيل في [قواعد البنية والمحاسبة](docs/architecture.md) و[ملاحظات الإصلاحات](docs/release-notes.md).
+
+## بيانات النسخة العامة
+
+أزيلت بيانات الأمثلة التي تضمنت جهات اتصال وحسابات موظفين ورواتب وتاريخًا ماليًا وبيانات حسابات ألعاب واشتراكات. قوائم البيانات الأولية فارغة عمدًا، وكلمات مرور الاختبارات تولد أثناء التشغيل. لا يوجد حساب دخول افتراضي منشور؛ استخدم حسابًا مصرحًا به في قاعدة البيانات المجهزة.
+
+لا ترفع ملفات `.env` أو نسخ قواعد البيانات أو بيانات العملاء أو بيانات حسابات حقيقية. تنظيف ملفات المستودع لا يعدل بيانات قاعدة الإنتاج.

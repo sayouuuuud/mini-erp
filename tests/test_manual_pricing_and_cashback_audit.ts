@@ -261,7 +261,7 @@ const earnedTx = custTxs.find(tx => tx.orderNumber === transferTicketNumber && t
 assert(redeemedTx !== undefined, 'Unified wallet redeemed transaction logged for cashback');
 assert(earnedTx !== undefined, 'Unified wallet earned transaction logged for account balance');
 
-console.log('\n--- 3. Testing Wholesale Dealer Cashback Isolation (GEMINI.md Invariant) ---');
+console.log('\n--- 3. Testing Wholesale Dealer Cashback Isolation (docs/architecture.md Invariant) ---');
 
 // Setup mock wholesale dealer
 const testDealer: Dealer = {
@@ -325,7 +325,7 @@ const mwCbAfter = db.getDealerWallets().find(w => w.id === 'mw_cashback')?.balan
 assert(mwCbAfter === mwCbInitial - dealerTransferAmount, `Dealer system wallet mw_cashback decreased by 50 (${mwCbInitial} -> ${mwCbAfter})`);
 
 const wCbAfterDealerTransfer = db.getStoreWallets().find(w => w.id === 'w_cashback')?.balance || 0;
-assert(wCbAfterDealerTransfer === wCbBeforeDealerTransfer, `Retail wallet w_cashback MUST NOT be touched by wholesale transfer (GEMINI.md isolation)`);
+assert(wCbAfterDealerTransfer === wCbBeforeDealerTransfer, `Retail wallet w_cashback MUST NOT be touched by wholesale transfer (docs/architecture.md isolation)`);
 
 console.log('\n================================================================');
 console.log(`📊 AUDIT RESULTS: ${testsPassed} passed, ${testsFailed} failed`);

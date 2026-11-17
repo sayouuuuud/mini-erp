@@ -1,4 +1,4 @@
-// scripts/test_product_wallets_and_referral_network.ts
+// tests/test_product_wallets_and_referral_network.ts
 // Automated Test Audit Suite for Task 7 (Product Wallets & Stock Consumption) and Task 8 (Referral Network)
 
 // 1. Setup mock environment for Node
@@ -420,7 +420,7 @@ async function runTestSuite() {
     assert(indirectReferees[0].id === tier2Id, 'Indirect referee should be tier2 customer');
   });
 
-  await test('Referral commission credit to customer and system referral wallet adheres to GEMINI.md', async () => {
+  await test('Referral commission credit to customer and system referral wallet adheres to docs/architecture.md', async () => {
     const custId = 'ref_comm_cust_' + Date.now();
     db.saveCustomer({
       id: custId,
@@ -490,7 +490,7 @@ async function runTestSuite() {
     assert(verifiedWallet.balance === initialTotalRef - transferAmount, `Store wallet balance should decrement by ${transferAmount} from ${initialTotalRef}, got ${verifiedWallet.balance}`);
   });
 
-  await test('Wholesale dealer referral debit isolates to mw_referrals per GEMINI.md rule 3', async () => {
+  await test('Wholesale dealer referral debit isolates to mw_referrals per docs/architecture.md rule 3', async () => {
     const dealerId = 'ref_dealer_' + Date.now();
     db.saveCustomer({
       id: dealerId,

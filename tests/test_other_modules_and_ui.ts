@@ -356,7 +356,7 @@ async function runTestSuite() {
     assert(participantAfterRefund?.isWinner === false, 'Participant isWinner reset to false after ticket refund', 'Competitions Sync');
     assert(rewardsAfterRefund[0].status === 'cancelled', 'Pending reward automatically cancelled when participant lost eligibility due to refund', 'Competitions Sync');
 
-    // 8. Test Dealer Cashback Reward Delivery strictly routes to mw_cashback per GEMINI.md Rule 3
+    // 8. Test Dealer Cashback Reward Delivery strictly routes to mw_cashback per docs/architecture.md Rule 3
     const dealerWalletsBefore = db.getDealerWallets();
     const storeWalletsBefore = db.getStoreWallets();
     const mwCashbackBefore = dealerWalletsBefore.find(w => w.id === 'mw_cashback')?.balance || 0;
@@ -394,8 +394,8 @@ async function runTestSuite() {
     const mwCashbackAfter = dealerWalletsAfter.find(w => w.id === 'mw_cashback')?.balance || 0;
     const wCashbackAfter = storeWalletsAfter.find(w => w.id === 'w_cashback')?.balance || 0;
 
-    assert(mwCashbackAfter === mwCashbackBefore + 100, 'Dealer cashback reward strictly credited mw_cashback in dealer wallets (GEMINI.md Rule 3)', 'Competitions Delivery', { mwCashbackBefore, mwCashbackAfter });
-    assert(wCashbackAfter === wCashbackBefore, 'Retail w_cashback completely untouched by dealer reward delivery (GEMINI.md Rule 3)', 'Competitions Delivery', { wCashbackBefore, wCashbackAfter });
+    assert(mwCashbackAfter === mwCashbackBefore + 100, 'Dealer cashback reward strictly credited mw_cashback in dealer wallets (docs/architecture.md Rule 3)', 'Competitions Delivery', { mwCashbackBefore, mwCashbackAfter });
+    assert(wCashbackAfter === wCashbackBefore, 'Retail w_cashback completely untouched by dealer reward delivery (docs/architecture.md Rule 3)', 'Competitions Delivery', { wCashbackBefore, wCashbackAfter });
 
   } catch (e: any) {
     assert(false, `Competitions Suite Error: ${e.message}`, 'Competitions Sync', e);

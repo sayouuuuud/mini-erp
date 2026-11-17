@@ -5,7 +5,8 @@ window.scrollTo=()=>{};global.requestAnimationFrame=cb=>setTimeout(cb,0);global.
 let sessionEvent,signouts=0,profile=null,hydrate=async()=>{},replays=[],toasts=[],actions=[];
 const defer=()=>{let resolve;const promise=new Promise(r=>resolve=r);return {promise,resolve};};
 global.__test={shifts:[],toast:(...a)=>toasts.push(a),storage:{setTestScope(){},resetAndHydrate:()=>hydrate(),clearSession(){},withMaintenance:f=>f()},api:{auth:{getSession:async()=>({data:{session:{}}}),onAuthStateChange:cb=>{sessionEvent=cb;return {data:{subscription:{unsubscribe(){}}}}},signOut:async()=>{signouts++;sessionEvent?.('SIGNED_OUT');}},rpc:async(name,args)=>{if(name==='erp_current_user')return profile;if(name==='erp_action_history')return {data:actions};if(name==='erp_replay_action'){replays.push(args);await replayWait.promise;return {data:{}};}throw Error(name);}}};
-const {React:R,act,createRoot,AuthProvider,useAuth,HistoryProvider,ActionHistoryDialog,ShiftHistory}=require('./bundle.cjs');
+(async()=>{
+const {React:R,act,createRoot,AuthProvider,useAuth,HistoryProvider,ActionHistoryDialog,ShiftHistory}=await require('./build_history_ui_test.cjs')();
 const h=R.createElement;let auth,root;
 function Probe(){auth=useAuth();return h('span',null,auth.isRestoring?'LOADING':auth.restoreError?'ERROR':auth.user?'SIGNED_IN':'LOGIN');}
 const tick=()=>act(async()=>{await new Promise(r=>setTimeout(r,5));});
@@ -30,3 +31,5 @@ async function unmount(){await act(async()=>root.unmount());document.body.innerH
  await act(async()=>[...document.querySelectorAll('button')].find(b=>b.textContent==='عرض الوردية').click());assert(document.body.textContent.includes('SAVED-TICKET'));assert(document.body.textContent.includes('Saved wallet'));assert(document.body.textContent.includes('خزنة الأرباح'));await unmount();
  console.log('PASS: delayed session+profile+hydration, transient failure/retry without signout, signout race, selected action ID/doubleclick lock, saved shift detail view.');process.exit(0);
 })().catch(e=>{console.error(e);process.exit(1)});
+
+})().catch(e=>{console.error(e);process.exitCode=1;});
