@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { User, Permission } from '../src/types/auth.types';
 import { CustomerTicket } from '../src/types/customer.types';
 import { CompetitionReward } from '../src/types/competitions.types';
@@ -46,6 +47,11 @@ async function runSecurityAndRbacSuite() {
     }
   }
 
+  // Generate throwaway credentials in memory; never embed passwords in source.
+  const adminTestCredential = randomUUID();
+  const employeeTestCredential = randomUUID();
+  const financeTestCredential = randomUUID();
+
   // Test Actors
   const adminActor: User = {
     id: 'usr_admin',
@@ -54,7 +60,7 @@ async function runSecurityAndRbacSuite() {
     role: 'admin',
     jobTitle: 'المدير التنفيذي',
     isActive: true,
-    password: 'secure_admin_pass',
+    password: adminTestCredential,
     permissions: [
       'view', 'add', 'edit', 'delete', 'print', 'export',
       'manage_users', 'manage_finance', 'close_shift', 'manage_settings',
@@ -71,7 +77,7 @@ async function runSecurityAndRbacSuite() {
     department: 'customers',
     jobTitle: 'موظف خدمة عملاء',
     isActive: true,
-    password: 'password123',
+    password: employeeTestCredential,
     permissions: ['view', 'add', 'edit', 'print'], // Notice: NO 'delete', NO 'manage_users', NO 'deliver_rewards'
     createdAt: new Date().toISOString()
   };
@@ -84,7 +90,7 @@ async function runSecurityAndRbacSuite() {
     department: 'finance',
     jobTitle: 'محاسبة الخزينة',
     isActive: true,
-    password: 'password123',
+    password: financeTestCredential,
     permissions: ['view', 'add', 'edit', 'print', 'manage_finance'],
     createdAt: new Date().toISOString()
   };
@@ -210,12 +216,12 @@ async function runSecurityAndRbacSuite() {
   console.log('\n▶ SUITE 3: Factory Reset & Wipe Data Protection');
 
   // Employee attempts wipeAllData
-  const empWipeResult = db.wipeAllData('any_pass', employeeActor);
+  const empWipeResult = db.wipeAllData(randomUUID(), employeeActor);
   assert(!empWipeResult, 'SEC-14', 'Non-admin actor is blocked from wiping database');
   assert(db.getCustomers().length > 0, 'SEC-15', 'Customer records remain intact after unauthorized wipe attempt');
 
   // Attempt wipeAllData with invalid admin password
-  const badPassWipeResult = db.wipeAllData('WRONG_PASS', adminActor);
+  const badPassWipeResult = db.wipeAllData(randomUUID(), adminActor);
   assert(!badPassWipeResult, 'SEC-16', 'wipeAllData is rejected when password does not match admin password');
   assert(db.getCustomers().length > 0, 'SEC-17', 'Data remains untouched when password is wrong');
 
@@ -276,7 +282,7 @@ async function runSecurityAndRbacSuite() {
   assert(Boolean(escalationLog), 'SEC-25', 'Privilege escalation attempt was explicitly identified and logged');
 
   // Check no password leakage in audit logs
-  const passwordLeak = auditLogs.some(l => l.details && l.details.includes('secure_admin_pass'));
+  const passwordLeak = auditLogs.some(l => l.details && l.details.includes(adminTestCredential));
   assert(!passwordLeak, 'SEC-26', 'Admin passwords and secrets are never leaked in audit logs');
 
   // -------------------------------------------------------------------------

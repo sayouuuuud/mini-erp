@@ -14,7 +14,8 @@
     "test:wallet-rpc": "node scripts/test_wallet_rpc_integration.mjs",
     "test:maintenance": "node scripts/test_maintenance.cjs",
     "test:inventory-refunds": "node scripts/test_inventory_refunds.cjs",
-    "test:fraud": "node scripts/test_ticket_fraud.cjs"
+    "test:fraud": "node scripts/test_ticket_fraud.cjs",
+    "test:no-embedded-credentials": "node scripts/test_no_embedded_credentials.cjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.118.0",
